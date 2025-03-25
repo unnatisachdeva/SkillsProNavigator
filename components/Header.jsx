@@ -4,9 +4,13 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, Stars } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { checkUser } from "@/lib/checkUser";
 
-const Header = () => {
-    return (
+const Header= async()=> {
+
+  await checkUser();
+ 
+  return (
       <header>
         <nav className="flex justify-between items-center p-4 bg-gray-900 text-white">
           <Link href='/'>
