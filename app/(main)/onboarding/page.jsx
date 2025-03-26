@@ -1,19 +1,23 @@
+// app/(main)/onboarding/page.jsx
+
 import { getUserOnboardingStatus } from "@/actions/user";
 import { industries } from "@/data/industries";
 import OnboardingForm from "./_components/onboarding-form";
-//import { industries } from "@/data/industries";
+import { redirect } from "next/navigation";
 
 const OnBoardingPage = async () => {
-    //check if user is already oboarded 
-    const {isOnboarded } = await getUserOnboardingStatus();
-    
-    if(isOnboarded){
-        redirect("/dashboard");
-    }
+  // Check if user is onboarded
+  const { isOnboarded } = await getUserOnboardingStatus();
 
-    return <main >
-        <OnboardingForm industries={industries}/>
+  if (isOnboarded) {
+    redirect("/dashboard");
+  }
+
+  return (
+    <main>
+      <OnboardingForm industries={industries} />
     </main>
+  );
 };
 
 export default OnBoardingPage;

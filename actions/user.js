@@ -34,7 +34,14 @@ export async function updateUser(data) {
           industryInsight = await db.industryInsight.create({
             data: {
               industry: data.industry,
-              ...insights,
+             // ...insights,
+             salaryRanges:[],
+             growthRate:0,
+             demandLevel: "Medium",
+             topSkills: [],
+             marketOutLook: "Neutral",
+             keyTrends: [],
+             recommendedSkills:[],
               nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             },
           });
@@ -92,7 +99,7 @@ export async function getUserOnboardingStatus() {
       isOnboarded: !!user?.industry,
     };
   } catch (error) {
-    console.error("Error checking onboarding status:", error);
+    console.error("Error checking onboarding status:", error.message);
     throw new Error("Failed to check onboarding status");
   }
 }
