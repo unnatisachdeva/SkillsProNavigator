@@ -13,8 +13,9 @@ model User {
   email         String    @unique
   name          String?
   imageUrl      String?
-  industry      String?    // Combined industry-subindustry (e.g., "tech-software-development")
-  industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
+  industry      String    @unique // Ensure industry is non-null if you want strict relation
+industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

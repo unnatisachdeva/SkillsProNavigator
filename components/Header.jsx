@@ -19,7 +19,7 @@ const Header= async()=> {
               alt="Sensai logo"
               width={200}
               height={60}
-              className="h-12 py-1 w-auto object-contain"
+              className="h-14 py-1 w-auto object-contain"
             />
           </Link>
 

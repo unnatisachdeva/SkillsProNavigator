@@ -3,18 +3,17 @@
 import { getUserOnboardingStatus } from "@/actions/user";
 import { industries } from "@/data/industries";
 import OnboardingForm from "./_components/onboarding-form";
-import { redirect } from "next/navigation";
 
 const OnBoardingPage = async () => {
-  // Check if user is onboarded
-  const { isOnboarded } = await getUserOnboardingStatus();
+  console.log("🚀 OnBoardingPage Loaded");
 
-  if (isOnboarded) {
-    redirect("/dashboard");
-  }
+  // Ensure the function is working
+  const { isOnboarded } = await getUserOnboardingStatus();
+  console.log("👉 Onboarding Status:", isOnboarded);
 
   return (
     <main>
+      
       <OnboardingForm industries={industries} />
     </main>
   );
