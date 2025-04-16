@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function generateQuiz(){
-    const { userId } = auth();
+    const { userId } = await auth();
     console.log("User  ID:", userId); // Debugging log
     if (!userId) throw new Error("Unauthorized");
     
@@ -20,7 +20,7 @@ export async function generateQuiz(){
 
       //prompt to generate quiz 
     const prompt = `
-    Generate 10 technical interview questions for a ${
+    Generate 3 technical interview questions for a ${
       user.industry
     } professional${
     user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
@@ -124,6 +124,32 @@ export async function saveQuizResult(questions, answers, score) {
       } catch (error) {
         console.error("Error saving quiz result:", error);
         throw new Error("Failed to save quiz result");
+      }
+    }
+    export async function getAssessments() { //fetching quiz progress data 
+      const { userId } = await auth();
+      if (!userId) throw new Error("Unauthorized");
+    
+      const user = await db.user.findUnique({
+        where: { clerkUserId: userId },
+      });
+    
+      if (!user) throw new Error("User not found");
+    
+      try {
+        const assessments = await db.assessment.findMany({
+          where: {
+            userId: user.id,
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        });
+    
+        return assessments;
+      } catch (error) {
+        console.error("Error fetching assessments:", error);
+        throw new Error("Failed to fetch assessments");
       }
     }
 

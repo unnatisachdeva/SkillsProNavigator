@@ -1,5 +1,7 @@
 "use client";
-import { generateQuiz } from "@/actions/interview";
+
+import { generateQuiz, saveQuizResult } from "@/actions/interview";
+//import QuizResult from "./quiz-result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -8,6 +10,8 @@ import useFetch from "@/hooks/use-fetch";
 import { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 import { useUser  } from '@clerk/nextjs'; 
+import { toast } from "sonner";
+import QuizResult from "./quiz-result";
 
 const Quiz = () => {
     const { isSignedIn } = useUser ();
@@ -29,6 +33,15 @@ const Quiz = () => {
         error,
       } = useFetch(generateQuiz);
 
+      const {
+        loading: savingResult,
+        fn: saveQuizResultFn,
+        data: resultData,
+        setData: setResultData,
+      } = useFetch(saveQuizResult);
+
+      console.log(resultData);
+
       //if quiz data changes i when quiz is generated , store answers in an array
       useEffect(() => {
         if (quizData) {
@@ -36,10 +49,47 @@ const Quiz = () => {
         }
       }, [quizData]);
 
+      const handleAnswer = (answer) => {
+        const newAnswers = [...answers];
+        newAnswers[currentQuestion] = answer;
+        setAnswers(newAnswers);
+      };
+      const handleNext= ()=>
+      {
+        if(currentQuestion<quizData.length-1){ //means its not the last ques 
+          setCurrentQuestion(currentQuestion+1);
+          setShowExplanation(false);
+        }
+        else{
+          finishQuiz()
+        }
+      };
+      const calculateScore = () => {
+        let correct = 0;
+        answers.forEach((answer, index) => {
+          if (answer === quizData[index].correctAnswer) {
+            correct++;
+          }
+        });
+        return (correct / quizData.length) * 100;
+      };
+      
+      const finishQuiz = async () => {
+         //will calculate result of quiz and make api call to save result of quiz
+          const score = calculateScore();
+          try {
+            await saveQuizResultFn(quizData, answers, score);
+            toast.success("Quiz completed!");
+          } catch (error) {
+            toast.error(error.message || "Failed to save quiz results");
+          }
+        };
+
       //when quiz is generated show a bar loader 
       if (generatingQuiz) {
         return <BarLoader className="mt-4" width={"100%"} color="gray" />;
       }
+
 
       if (error) {
         return (
@@ -53,10 +103,25 @@ const Quiz = () => {
             </Card>
         );
     }
+    const startNewQuiz = () => {
+      setCurrentQuestion(0);
+      setAnswers([]);
+      setShowExplanation(false);
+      generateQuizFn();
+      setResultData(null);
+    };
 
+    //show results if quiz is completed 
+    if (resultData) {
+      return (
+        <div className="mx-2">
+          <QuizResult result={resultData} onStartNew={startNewQuiz} />
+        </div>
+      );
+    }
       //before the quiz is generated: 
-      if (!quizData) {
-        return (
+    if (!quizData) {
+      return (
           <Card className="mx-2">
             <CardHeader>
               <CardTitle>Ready to test your knowledge?</CardTitle>
@@ -83,10 +148,10 @@ const Quiz = () => {
           <CardHeader>
             <CardTitle>Question {currentQuestion + 1} of {quizData.length}</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
           <p className="text-lg font-medium">{question.question}</p>
           <RadioGroup
-          onValueChange={handleAnswer}
+         onValueChange={handleAnswer}
           value={answers[currentQuestion]}
           className="space-y-2"
         >
@@ -97,9 +162,37 @@ const Quiz = () => {
             </div>
           ))}
         </RadioGroup>
+
+        {showExplanation && 
+        <div>
+          <p className="font-medium"> Explanation: </p> 
+          <p className="text-muted-foreground">  {question.explanation}</p>
+          </div>} 
           </CardContent>
-          <CardFooter>
-            
+
+
+          <CardFooter className="flex justify-between">
+          {!showExplanation && (
+          <Button
+            onClick={() => setShowExplanation(true)}
+            variant="outline"
+            disabled={!answers[currentQuestion]}
+          >
+            Show Explanation
+          </Button>
+        )}
+        <Button
+          onClick={handleNext}
+          disabled={!answers[currentQuestion] || savingResult}
+          className="ml-auto"
+        >
+          {savingResult && (
+            <BarLoader className="mt-4" width={"100%"} color="gray" />
+          )}
+          {currentQuestion < quizData.length - 1
+            ? "Next Question"
+            : "Finish Quiz"}
+        </Button>
           </CardFooter>
         </Card>
       );
