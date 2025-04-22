@@ -2,7 +2,7 @@
     /* useRef is a React Hook, so it must be explicitly imported.
     By default, React does not auto-import hooks like useRef, useState, etc.*/
 
-//rotating the banner image up and down by few degrees on landing poage
+//rotating the banner image up and down by few degrees on landing page
 "use client";
 
 import React, { useEffect, useRef } from "react";
@@ -16,7 +16,7 @@ const HeroSection = () => {
   useEffect(() => {
     const imageElement = imageRef.current;
 
-    const handleScroll = () => {
+    const handleScroll = () => { //hook 
       const scrollPosition = window.scrollY;
       const scrollThreshold = 100;
 
@@ -36,7 +36,7 @@ const HeroSection = () => {
         <section className="w-full pt-36 md:pt-48 pb-10">
             <div className="space-y-6 text-center">
                 <div className="space-y-6 mx-auto">
-                    <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title animate-gradient">
+                    <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title animate-gradient -mt-10">
                         Your AI career coach for 
                         <br/>
                         Professional Success  
