@@ -15,3 +15,16 @@
  GET / 200 in 2073ms
    Reload env: .env
    Reload env: .env
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. Please report the content of /var/folders/lg/hqtnhvdx3n98yjc04cgjgkzc0000gp/T/next-panic-f79f9db541aedc15d071492891f3d97e.log, along with a description of what you were doing when the error occurred, to https://github.com/vercel/next.js/issues/new
+[Error [TurbopackInternalError]: Next.js package not found
+
+Debug info:
+- Execution of get_entrypoints_with_issues failed
+- Execution of Project::entrypoints failed
+- Execution of AppProject::routes failed
+- Execution of directory_tree_to_entrypoints_internal failed
+- Execution of directory_tree_to_loader_tree failed
+- Execution of *FileSystemPath::join failed
+- Execution of get_next_package failed
+- Next.js package not found]
+[?25h
