@@ -11,6 +11,8 @@ const OnBoardingPage = async () => {
   const { isOnboarded } = await getUserOnboardingStatus();
   console.log("👉 Onboarding Status:", isOnboarded);
 
+  
+
   return (
     <main>
       

@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
             <Toaster richColors />
               
           
-            <footer className="bg-muted/50 py-12">
+            <footer className="bg-gray-900 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200"></div>
             </footer>
             </ThemeProvider>

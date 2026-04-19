@@ -1,0 +1,17 @@
+
+> skillspro@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.1.6 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://127.0.2.2:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Compiled in 359ms
+ ✓ Ready in 999ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1756ms
+ GET / 200 in 2073ms
+   Reload env: .env
+   Reload env: .env

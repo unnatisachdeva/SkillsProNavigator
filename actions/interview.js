@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 export async function generateQuiz(){
     const { userId } = await auth();
@@ -20,8 +20,8 @@ export async function generateQuiz(){
 
       //prompt to generate quiz 
     const prompt = `
-    Generate 3 technical interview questions for a ${
-      user.industry
+    Generate 10 technical interview questions for a ${
+      user.industry || "software"
     } professional${
     user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
   }.
@@ -44,15 +44,24 @@ export async function generateQuiz(){
   try {
     const result = await model.generateContent(prompt);
     const response = result.response;
-    const text = response.text();
-    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-    const quiz = JSON.parse(cleanedText);
+    let text = response.text();
+    text = text.replace(/```(?:json)?\n?/g, "").trim();
+    
+    // ensure we only parse the JSON object or array
+    const jsonMatch = text.match(/[\{\[][\s\S]*[\}\]]/);
+    if (jsonMatch) {
+      text = jsonMatch[0];
+    }
+    
+    const quiz = JSON.parse(text);
 
     return quiz.questions;
 
   } catch (error) {
-    console.error("Error generating quiz:", error);
-    throw new Error("Failed to generate quiz questions");
+    console.error("Error generating quiz:", error.message || error);
+    throw new Error(
+      error.message || "Failed to generate quiz questions"
+    );
   }
 }
 
@@ -90,7 +99,7 @@ export async function saveQuizResult(questions, answers, score) {
       .join("\n\n");
 
       const improvementPrompt = `
-      The user got the following ${user.industry} technical interview questions wrong:
+      The user got the following ${user.industry || "software"} technical interview questions wrong:
 
       ${wrongQuestionsText}
 

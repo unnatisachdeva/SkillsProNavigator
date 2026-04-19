@@ -78,7 +78,7 @@ const Quiz = () => {
          //will calculate result of quiz and make api call to save result of quiz
           const score = calculateScore();
           try {
-            await saveQuizResultFn(quizData, answers, score);
+            await saveQuizResultFn(quizData, answers, score); //call 
             toast.success("Quiz completed!");
           } catch (error) {
             toast.error(error.message || "Failed to save quiz results");

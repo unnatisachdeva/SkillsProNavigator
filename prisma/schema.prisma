@@ -13,7 +13,7 @@ model User {
   email         String    @unique
   name          String?
   imageUrl      String?
-  industry      String    @unique // Ensure industry is non-null if you want strict relation
+  industry      String? // Ensure industry is non-null if you want strict relation
 industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
 
   createdAt     DateTime  @default(now())

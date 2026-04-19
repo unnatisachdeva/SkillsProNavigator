@@ -8,7 +8,7 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); //api key 
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 export const generateAIInsights = async (industry) => {
   const prompt = `
@@ -60,7 +60,7 @@ export async function getIndustryInsights() {
       data: {
         industry: user.industry,
         ...insights,
-        nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),  //info to be ipdated weekly 
       },
     });
 

@@ -26,7 +26,7 @@ const Header= async()=> {
           <div className="flex items-center space-x-2 md:space-x-4">
             <SignedIn>
             <Link href={"/dashboard"}>
-              <Button variant="outline">
+              <Button className="bg-transparent border border-gray-300 text-white hover:bg-gray-800">
                 
                   <LayoutDashboard className="h-4 w-4" />
                   {/* To make Industry Insights button responsive */}
@@ -35,7 +35,7 @@ const Header= async()=> {
               </Link>
             
 
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Button>
                   <Stars className="h-4 w-4" />
@@ -45,20 +45,20 @@ const Header= async()=> {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Link href="/resume" className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link href="/resume" className="flex items-center gap-2 w-full cursor-pointer">
                     <FileText className="h-4 w-4" />
                     <span>Build Resume</span> 
                   </Link>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem>
-                  <Link href="/ai-cover-letter" className="flex items-center gap-2">
+                {/* <DropdownMenuItem asChild>
+                  <Link href="/ai-cover-letter" className="flex items-center gap-2 w-full cursor-pointer">
                     <PenBox className="h-4 w-4" />
                     <span>Cover Letter</span> 
                   </Link>
                 </DropdownMenuItem> */}
-                <DropdownMenuItem>
-                  <Link href="/interview" className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link href="/interview" className="flex items-center gap-2 w-full cursor-pointer">
                     <GraduationCap className="h-4 w-4" />
                     <span>Interview Prep</span> 
                   </Link>
@@ -69,7 +69,7 @@ const Header= async()=> {
 
             <SignedOut>
               <SignInButton>
-                <Button variant="outline">Sign in</Button> 
+                <Button className="bg-transparent border border-gray-300 text-white hover:bg-gray-800">Sign in</Button> 
               </SignInButton>
             </SignedOut>
 

@@ -1,16 +1,13 @@
-import { BarLoader } from "react-spinners";
 import { Suspense } from "react";
 
 export default function Layout({ children }) {
   return (
     <div className="px-5">
       <Suspense
-        fallback={<BarLoader className="mt-4" width={"100%"} color="gray" />}
+        fallback={<div className="animate-pulse mt-4 w-full h-1 bg-gray-300 rounded" />}
       >
         {children}
       </Suspense>
     </div>
   );
 }
-
-//suspense means until api is loaded we will show 
